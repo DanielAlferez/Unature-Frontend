@@ -1,0 +1,116 @@
+/* Importa las utilidades de Tailwind CSS primero */
+@import 'tailwindcss/utilities';
+
+/* Importa los estilos de base de Tailwind CSS */
+@import 'tailwindcss/base';
+
+/* Importa los componentes de Tailwind CSS */
+@import 'tailwindcss/components';
+
+/* Importa la fuente Inter después de las importaciones de Tailwind CSS */
+@import '@fontsource/inter';
+
+/* Tus estilos personalizados vienen después de las importaciones de Tailwind y fuentes */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.cardHome {
+  color: black;
+  position: relative;
+  font-family: sans-serif;
+}
+
+.cardHome::before,
+.cardHome::after {
+  content: "";
+  background-color: rgb(255, 235, 235);
+  position: absolute;
+}
+
+.cardHome::before {
+  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+  top: 30%;
+  right: 7%;
+}
+
+
+.cardHome .box {
+  padding: 1rem;
+  background-color: rgba(241, 226, 226, 0);
+  border: 1px solid rgba(0, 0, 0, 0.222);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 0.7rem;
+  transition: all ease 0.3s;
+}
+
+.cardHome .box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardHome .box:hover {
+  box-shadow: 0px 0px 20px 2px #96D9C6;
+  
+}
+.toggle {
+  --bgt: hsl(0, 0%, 96%);
+  --bgc: hsl(96, 85%, 34%);
+  width: 30px;
+  height: 15px;
+  background-color: var(--bgt);
+  box-shadow: 0 .1rem 2rem 0 rgba(125, 125, 125, 0.25);
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 0 .1rem;
+  transition: background-color 400ms;
+}
+
+.toggle__circle {
+  width: 12.5px;
+  height: 12.5px;
+  cursor: pointer;
+  background-color: var(--bgc);
+  border-radius: 50%;
+  position: relative;
+  transition: margin 400ms ease-in-out, background-color 1000ms;
+}
+
+.toggle__circle::after,
+.toggle__circle::before {
+  content: '';
+  position: absolute;
+  background-color: var(--bgt);
+  bottom: 118%;
+  transform-origin: bottom left;
+}
+
+.toggle__circle::before {
+  width: 3.75px;
+  height: 6.25px;
+  left: 32%;
+  border-radius: 0% 100% 0% 100% / 0% 27% 73% 100%;
+  transform: translateX(-70%) rotate(-2deg);
+}
+
+.toggle__circle::after {
+  width: 6.25px;
+  height: 7.5px;
+  left: 48%;
+  border-radius: 100% 0% 100% 0% / 100% 0% 100% 0%;
+  transform: rotate(-20deg);
+}
+
+#checkbox:checked + .toggle > .toggle__circle {
+  margin-left: calc(30px - (.1rem * 2) - 12.5px);
+}
+
+#checkbox:checked + .toggle {
+  --bgt: hsl(96, 85%, 34%);
+  --bgc: hsl(0, 0%, 96%);
+}

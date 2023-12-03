@@ -17,6 +17,7 @@ export default function Comments({qty}) {
   const [currentImage, setCurrentImage] = React.useState(0);
   const [isViewerOpen, setIsViewerOpen] = React.useState(false)
   const images = [MAP]
+
   const openImageViewer = React.useCallback((index) => {
     setCurrentImage(index);
     setIsViewerOpen(true);

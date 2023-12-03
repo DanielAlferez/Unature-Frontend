@@ -5,7 +5,7 @@ import Button from '@mui/joy/Button';
 import { Input, Textarea } from '@mui/joy';
 import { FaArrowCircleRight } from 'react-icons/fa';
 
-const WriteComment = () => {
+const WriteComment = ({showButton=true}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes manejar la lógica del envío del formulario
@@ -54,9 +54,11 @@ const WriteComment = () => {
         multiline
         fullWidth
       />
-      <Button endDecorator={<FaArrowCircleRight />} color="success" variant='soft'>
-        Sugerir
-      </Button>
+      {showButton && (
+        <Button endDecorator={<FaArrowCircleRight />} color="success" variant='soft'>
+          Sugerir
+        </Button>
+      )}
     </Box>
   );
 };

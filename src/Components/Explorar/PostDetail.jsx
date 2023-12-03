@@ -77,7 +77,7 @@ function PostDetail() {
                 </Link>
               </div>
             </div>
-            <div className='md:px-14'>
+            <div className='md:px-14' >
               <Comments qty={data.comentarios}/>
             </div>
           </div>

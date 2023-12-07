@@ -45,9 +45,9 @@ function Home() {
                 <p className="text-lg pt-5 pb-10 max-w-3xl">
                     Únete a nuestra comunidad de amantes de la naturaleza y contribuye a la preservación del entorno en el campus Barcelona de la Universidad de los Llanos.
                 </p>
-                <button class="group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-darkGreen hover:before:[box-shadow:_20px_20px_20px_30px_#d6fff4] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-darkGreen relative bg-white h-16 w-64 border text-left p-3 text-gray-800 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-teal-200 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-teal-100 after:right-8 after:top-3 after:rounded-full after:blur-lg">
+                <Link to={'/comunidad/ingresar'} className="group flex justify-center items-center gap-2 group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-neutral-900 duration-500 hover:duration-500 underline underline-offset-2 hover:underline hover:underline-offset-4 origin-left hover:decoration-2 hover:text-neutral-300 relative bg-neutral-900 px-20 py-4 border text-left p-3 text-gray-50 text-base font-bold rounded-lg overflow-hidden after:absolute after:z-10 after:w-12 after:h-12 after:content[''] after:bg-sky-900 after:-left-8 after:top-8 after:rounded-full after:blur-lg hover:after:animate-pulse">
                     Únete
-                </button>
+                </Link>
             </div>
         </div>
         <div className=" text-darkGreen text-center my-20 px-20 mb-40">

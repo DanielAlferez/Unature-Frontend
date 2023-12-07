@@ -48,7 +48,7 @@ function NavBar() {
                     Nosotros
                     </Link>
                 </div>
-                <Link to={"/admin/panel"} className='bg-gray-200 hover:bg-gray-300 text-xs font-extralight p-3 rounded-md flex gap-1 flex-col items-center text-center w-28 '>
+                <Link to={"/comunidad/ingresar"} className='bg-gray-200 hover:bg-gray-300 text-xs font-extralight p-3 rounded-md flex gap-1 flex-col items-center text-center w-28 '>
                     <FaRegUser />
                     <p>Iniciar Sesión</p>
                 </Link>

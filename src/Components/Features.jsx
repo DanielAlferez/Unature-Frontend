@@ -53,7 +53,7 @@ function Features() {
         <div className="container mx-auto p-20 text-center">
                 <h1 className="text-4xl font-bold mt-10">La Naturaleza al Alcance de tu Mano</h1>
                 <div className='flex justify-center -mt-10'> 
-                    <img src={celular} alt="" className='rounded-3xl h-96 mb-10'/>
+                    <img src={celular} alt="" className='rounded-xl h-96 mb-10 '/>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                     {featureItems.map((item, index) => (

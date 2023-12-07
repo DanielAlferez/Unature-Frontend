@@ -10,6 +10,7 @@ import Typography from '@mui/joy/Typography';
 import Link from '@mui/joy/Link';
 import { FaComment, FaExclamation, FaHeart } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
+import { CgDanger } from "react-icons/cg";
 
 export default function CardPost({id, username, commonname, image, likes, comments}) {
   return (
@@ -122,15 +123,14 @@ export default function CardPost({id, username, commonname, image, likes, commen
 
         <Link
           href="#dribbble-shot"
-          level="body-md"
+          level="body-xs"
           underline="none"
-          startDecorator={<FaExclamation />}
+          startDecorator={<CgDanger />}
           sx={{
             fontWeight: 'lg',
             color: 'danger.plainColor',
-            '&:hover': { color: 'text.secondary' },
           }}
-        ></Link>
+        >Reportar</Link>
           </Box>
     </Card>
   );

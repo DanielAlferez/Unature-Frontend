@@ -1,14 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import LOGO from '../assets/LOGO.png';
-import { FaRegUser  } from 'react-icons/fa';
+import { FaRegUser, FaUserAltSlash  } from 'react-icons/fa';
+import { MdOutlineDashboard } from 'react-icons/md';
+import { HiUserCircle } from 'react-icons/hi2';
+import Dropdown from '@mui/joy/Dropdown';
+import Menu from '@mui/joy/Menu';
+import MenuButton from '@mui/joy/MenuButton';
+import MenuItem from '@mui/joy/MenuItem';
 
 function NavBar() {
   const location = useLocation();
-
+  const token = localStorage.getItem('accessToken')
+  const idUser = localStorage.getItem('id')
   const isRouteActive = (route) => {
     return `/${location.pathname.split('/')[1].charAt(0).toLocaleLowerCase() + location.pathname.split('/')[1].slice(1) }` === route;
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("id")
+    window.location.reload();
+  }
 
   // Clase CSS para los enlaces
   const linkClass = 'hover:text-gray-600 text-darkGreen';
@@ -48,10 +61,21 @@ function NavBar() {
                     Nosotros
                     </Link>
                 </div>
-                <Link to={"/comunidad/ingresar"} className='bg-gray-200 hover:bg-gray-300 text-xs font-extralight p-3 rounded-md flex gap-1 flex-col items-center text-center w-28 '>
+                {token ? (
+                  <Dropdown>
+                    <MenuButton startDecorator={<FaRegUser />}>Cuenta</MenuButton>
+                    <Menu>
+                    <Link to={`/comunidad/perfil/${idUser}`}> <MenuItem>Perfil</MenuItem></Link>
+                      <MenuItem onClick={handleLogOut}>Cerrar Sesión</MenuItem>
+                    </Menu>
+                  </Dropdown>
+                ) : (
+                  <Link to={"/comunidad/ingresar"} className='bg-gray-200 hover:bg-gray-300 text-xs font-extralight p-3 rounded-md flex gap-1 flex-col items-center text-center w-28 '>
                     <FaRegUser />
-                    <p>Iniciar Sesión</p>
-                </Link>
+                    <p>Acceder</p>
+                  </Link>
+                )}
+                
             </div>
         </div>
     </>

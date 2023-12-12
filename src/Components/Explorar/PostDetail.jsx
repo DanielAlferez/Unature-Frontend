@@ -7,15 +7,18 @@ import { FaArrowLeft, FaComment, FaHeart } from 'react-icons/fa';
 import {Link as Link2 } from "react-router-dom" 
 import Comments from './Comments';
 import ImageViewer from 'react-simple-image-viewer';
+import { useGetPublicationQuery } from '../../features/Api/postApiSlice';
 
 function PostDetail() {
     const { idPost } = useParams();
 
-    const postId = parseInt(idPost, 10); 
-    const data = obs.filter(data => data.publicacion_id==postId)[0]
+    const postId = parseInt(idPost); 
+    const {data, isSuccess} = useGetPublicationQuery(idPost)
+
     const [currentImage, setCurrentImage] = useState(0);
     const [isViewerOpen, setIsViewerOpen] = useState(false)
-    const images = [data.imagen]
+    const images = isSuccess ? [data.imagen] : [];
+
     const openImageViewer = useCallback((index) => {
       setCurrentImage(index);
       setIsViewerOpen(true);
@@ -25,6 +28,7 @@ function PostDetail() {
       setCurrentImage(0);
       setIsViewerOpen(false);
     };
+    
 
   return (
     <Layout>
@@ -34,10 +38,11 @@ function PostDetail() {
           Volver
         </Link2>
         <h1 className='font-extrabold text-darkGreen text-4xl text-center'>Publicación</h1>
-        <div className='mt-10'>
+        {isSuccess && (
+          <div className='mt-10'>
           <div className="grid lg:grid-cols-2 justify-center md:border rounded-lg p-10">
             <div className='flex flex-col justify-center'>
-              {images.map((src, index) => (
+              {isSuccess && images.map((src, index) => (
                 <div
                   key={index}
                   className='relative group'
@@ -78,10 +83,12 @@ function PostDetail() {
               </div>
             </div>
             <div className='md:px-14' >
-              <Comments qty={data.comentarios}/>
+              <Comments qty={data.comentarios} details={data.descripcion} location={data.ubicacion} idPost={idPost} userName={data.nombre_usuario}/>
             </div>
           </div>
         </div>
+
+        )}
       </div>
       {isViewerOpen && (
         <div className='z-50 overflow-hidden relative'>

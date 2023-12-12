@@ -11,8 +11,12 @@ import Link from '@mui/joy/Link';
 import { FaComment, FaExclamation, FaHeart } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 import { CgDanger } from "react-icons/cg";
+import { useDeletePostMutation } from '../../features/Api/postApiSlice';
 
-export default function CardPost({id, username, commonname, image, likes, comments}) {
+export default function CardPost({id, username, commonname, image, likes, comments, userId, admin=false}) {
+
+  const [deletePost, {data, isSuccess}] = useDeletePostMutation()
+
   return (
     <Card
       variant="plain"
@@ -74,7 +78,7 @@ export default function CardPost({id, username, commonname, image, likes, commen
           sx={{ '--Avatar-size': '1.5rem' }}
         />
         <Typography sx={{ fontSize: 'sm', fontWeight: 'md' }}>
-          {username}
+          <RouterLink to={`/comunidad/perfil/${userId}`} className='hover:underline'>{username}</RouterLink>
         </Typography>
         
         <Link
@@ -121,16 +125,22 @@ export default function CardPost({id, username, commonname, image, likes, commen
             )}
 
 
-        <Link
-          href="#dribbble-shot"
-          level="body-xs"
-          underline="none"
-          startDecorator={<CgDanger />}
-          sx={{
-            fontWeight: 'lg',
-            color: 'danger.plainColor',
-          }}
-        >Reportar</Link>
+            {
+              admin && (
+                <button onClick={() => deletePost(id)}>
+                  <Link
+                  href="#dribbble-shot"
+                  level="body-xs"
+                  underline="none"
+                  startDecorator={<CgDanger />}
+                  sx={{
+                    fontWeight: 'lg',
+                    color: 'danger.plainColor',
+                  }}
+                >Eliminar</Link>
+                </button>
+              )
+              }
           </Box>
     </Card>
   );

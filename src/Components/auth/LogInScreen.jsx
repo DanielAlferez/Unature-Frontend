@@ -1,8 +1,9 @@
 import Logo from "../../assets/LOGO.png";
 import { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CgDanger } from 'react-icons/cg';
 import Layout from "../../HomeLayout/HomeLayout";
+import { useLoginMutation } from "../../features/Api/authSlice";
 
 function LogInScreen() {
     const userRef = useRef();
@@ -13,37 +14,56 @@ function LogInScreen() {
     const [errPass, setErrPass] = useState('');
     const navigate = useNavigate();
 
+    const [login, {isSuccess}] = useLoginMutation()
+
     useEffect(() => {
         setErrMsg('');
     }, [email, pass]);
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault(); // Evita la recarga de la página por defecto del formulario
+    const storeTokenInLocalStorage = (token) => {
+        localStorage.setItem('accessToken', token);
+    };
 
-    //     if (!errPass && !errEmail) {
-    //         try {
-    //             const formData = {
-    //                 email: email,
-    //                 password: pass
-    //             };
-    //             const userData = await login(formData).unwrap();
-    //             dispatch(setCredentials({ user: userData.email, accessToken: userData.tokens.accessToken }));
-    //             setEmail('');
-    //             setPass('');
-    //             navigate('/admin/panel');
-    //         } catch (err) {
-    //             // Handle specific error statuses
-    //             if (err.status === 400) {
-    //                 setErrMsg('Falló el inicio de sesión, faltan datos');
-    //             } else if (err.status === 401) {
-    //                 setErrMsg('Contraseña o email Incorrecto');
-    //             } else {
-    //                 setErrMsg('Falló el inicio de sesión');
-    //             }
-    //             console.log(err);
-    //         }
-    //     }
-    // };
+    const storeIdInLocalStorage = (id) => {
+        localStorage.setItem('id', id);
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!errPass && !errEmail) {
+            try {
+                const formData = {
+                    "email": email,
+                    "password": pass
+                };
+                const userData = await login(formData).unwrap();
+                
+                // Almacena el token en localStorage
+                storeTokenInLocalStorage(userData.token);
+                storeIdInLocalStorage(userData.user_id);
+
+
+                setEmail('');
+                setPass('');
+                if (userData.user_id === 0) {
+                    navigate(`/admin`);
+                }else{
+                    navigate(`/comunidad/perfil/${userData.user_id}`);
+                }
+            } catch (err) {
+                if (err.status === 400) {
+                    setErrMsg('Falló el inicio de sesión, faltan datos');
+                } else if (err.status === 401) {
+                    setErrMsg('Contraseña o email Incorrecto');
+                } else {
+                    setErrMsg('Falló el inicio de sesión');
+                }
+                console.log(err);
+            }
+        }
+    };
 
     const handleUserInput = (e) => {
         setEmail(e.target.value);
@@ -97,8 +117,9 @@ function LogInScreen() {
                                     <p>{errMsg}</p>
                                 </div>
                             )}
-                            <button  className={`mt-5 text-white w-full hover:shadow-2xl rounded-lg p-2 transition duration-500 ease-in-out ${(errEmail || errPass) ? 'cursor-not-allowed bg-gray-400' : 'bg-darkGreen'}`}>Iniciar Sesión</button>
+                            <button onClick={(e) => handleSubmit(e)} className={`mt-5 text-white w-full hover:shadow-2xl rounded-lg p-2 transition duration-500 ease-in-out ${(errEmail || errPass) ? 'cursor-not-allowed bg-gray-400' : 'bg-darkGreen'}`}>Iniciar Sesión</button>
                         </form>
+                        <Link to={'/comunidad/registrarse'} className="text-sm mt-5 text-darkGreen hover:underline">¿Aún no tienes cuenta? Registrate aquí.</Link>
                     </div>
                 </div>
             </div>

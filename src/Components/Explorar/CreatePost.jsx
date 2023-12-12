@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import Layout from '../../HomeLayout/HomeLayout';
 import { Autocomplete, Box, Button, FormControl, FormLabel, Link, Textarea, Typography } from '@mui/joy';
 import { FaArrowCircleRight, FaArrowDown, FaArrowLeft } from 'react-icons/fa';
-import { Link as Link2 } from 'react-router-dom';
+import { Link as Link2, useNavigate } from 'react-router-dom';
 import ImageViewer from 'react-simple-image-viewer';
 import { MdOutlineChangeCircle, MdOutlineDeleteForever } from 'react-icons/md';
 import { RiImageAddFill } from 'react-icons/ri';
@@ -10,6 +10,7 @@ import Switch from '@mui/joy/Switch';
 import { HiBugAnt } from "react-icons/hi2";
 import WriteComment from './WriteComment';
 import MAP from "../../assets/MAPA_COMPLETO.png"
+import { useCreatePostMutation } from '../../features/Api/postApiSlice';
 
 function CreatePost() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -19,7 +20,12 @@ function CreatePost() {
   const [identify, setIdentify] = useState(false)
   const [currentImage2, setCurrentImage2] = React.useState(0);
   const [isViewerOpen2, setIsViewerOpen2] = React.useState(false)
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState(null)
+  const [imageBase64, setImageBase64] = useState(null);
+  const id = localStorage.getItem("id")
   const images = [MAP]
+  const navigate = useNavigate()
   
   const openImageViewer2 = React.useCallback((index) => {
     setCurrentImage2(index);
@@ -42,7 +48,14 @@ function CreatePost() {
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
     setImageFile(selectedImage);
-    setImageURL(URL.createObjectURL(selectedImage));
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImageURL(URL.createObjectURL(selectedImage));
+      setImageBase64(reader.result); // Almacena la imagen en formato base64
+    };
+
+    reader.readAsDataURL(selectedImage);
   };
 
   const handleDeleteImage = () => {
@@ -50,7 +63,32 @@ function CreatePost() {
     setImageURL(null);
   };
 
+  const [createPost, { isSuccess }] = useCreatePostMutation();
 
+
+  const handlePublish = async () => {
+    try {
+      const response = await createPost({
+        "descripcion": description,
+        "ubicacion": location,
+        "reportes": 0,
+        "id_usuario": parseInt(id),
+        "url_imagen": imageBase64, // Utiliza la imagen en formato base64 en lugar de la URL
+      });
+
+      navigate("/explorar")
+    } catch (error) {
+      console.error("Error al crear la publicación", error);
+    }
+  };
+
+  const handleLocationChange = (event, newValue) => {
+    if (newValue) {
+      setLocation(newValue.id);
+    } else {
+      setLocation(null);
+    }
+  };
 
   return (
     <Layout>
@@ -120,6 +158,8 @@ function CreatePost() {
               }}
             >
               <Textarea 
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 minRows={3}
                 placeholder="Descripción"
                 variant="outlined"
@@ -127,12 +167,17 @@ function CreatePost() {
                 fullWidth
               />
               <FormControl id="grouped-demo">
-                <Autocomplete
-                  placeholder='Ubicación'
-                  options={locationUnillanos}
-                  groupBy={(option) => option.location}
-                  getOptionLabel={(option) => option.name}
-                />
+                  <Autocomplete
+                    placeholder='Ubicación'
+                    options={locationUnillanos}
+                    groupBy={(option) => option.location}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleLocationChange}
+                    value={locationUnillanos.find((option) => option.id === location) || null}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Ubicación" />
+                    )}
+                  />
               </FormControl>
               <p  className='flex justify-center items-center gap-2 font-bold'>
                 Ver mapa <FaArrowDown/>
@@ -170,7 +215,7 @@ function CreatePost() {
                 <WriteComment showButton={false}/>
                 )}
               </div>
-              <Button endDecorator={<FaArrowCircleRight />} color="success" variant='soft'>
+              <Button onClick={handlePublish} endDecorator={<FaArrowCircleRight />} color="success" variant='soft'>
                 Publicar
               </Button>
             </Box>

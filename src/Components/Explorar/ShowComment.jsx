@@ -9,11 +9,25 @@ import CardActions from '@mui/joy/CardActions';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import { FaHeart, FaHeartBroken } from 'react-icons/fa';
+import { useCreateApproveMutation } from '../../features/Api/postApiSlice';
 
-export default function ShowComment() {
+export default function ShowComment({name, common_name, genus, sp, info, like=0, idenId}) {
 
     const [aprove, setAprove] = React.useState(false)
-    const [likes, setLikes] = React.useState(3)
+    const [likes, setLikes] = React.useState(like)
+    const id = localStorage.getItem("id")
+
+    const [giveLike, {isSuccess}] = useCreateApproveMutation()
+
+    const handleSubmit = () => {
+        const formData = {
+          "id_identificacion": parseInt(idenId), // Reemplaza con el valor correcto
+          "id_usuario": parseInt(id), // Reemplaza con el valor correcto
+        };
+        window.location.reload();
+        giveLike(formData);
+    };
+  
 
   return (
     <Card
@@ -26,8 +40,7 @@ export default function ShowComment() {
           gap: 2,
         }}
       >
-        <Avatar src="https://images.unsplash.com/profile-1502669002421-a8d274ad2897?dpr=2&auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff" size="lg" />
-        <Typography level="title-lg">Daniel Alférez</Typography>
+        <Typography level="title-lg">{name}</Typography>
         <div className='flex gap-2 px-2 ml-auto items-center'>
           {likes} <FaHeart className='text-darkRed'/>
         </div>  
@@ -36,38 +49,33 @@ export default function ShowComment() {
         <div className='flex flex-wrap gap-1'>
             <Typography level="title-sm">Nombre Común:</Typography>
             <Typography level="body-sm">
-                Hormiga Bala
+                {common_name}
             </Typography>
         </div>
         <div className='flex flex-wrap gap-1'>
             <Typography level="title-sm">Genero:</Typography>
             <Typography level="body-sm">
-                Paraponera
+                {genus}
             </Typography>
         </div>
         <div className='flex flex-wrap gap-1'>
             <Typography level="title-sm">Especie:</Typography>
             <Typography level="body-sm">
-                Clavata
+                {sp}
             </Typography>
         </div>
         <div className='flex flex-wrap gap-1'>
             <Typography level="title-sm">Información:</Typography>
             <Typography level="body-sm">
-                Tiene una picadura muy fuerte, tener cuidado!
+                {info}
             </Typography>
         </div>
       </CardContent>
       <CardActions className='ml-auto'>
-        {aprove ? (
-            <Button onClick={() => {setAprove(false), setLikes(likes-1)}} variant="soft" color="danger" className='flex gap-2'>
-                Dejar de Aprobar <FaHeartBroken />
-            </Button>
-        ) : (
-            <Button onClick={() => {setAprove(true), setLikes(likes+1)}} variant="soft" color="primary" className='flex gap-2'>
+        
+            <Button onClick={() => {handleSubmit(), setAprove(true), setLikes(likes+1)}} variant="soft" color="primary" className='flex gap-2'>
                 Aprobar <FaHeart />
             </Button>
-        )}
 
 
       </CardActions>

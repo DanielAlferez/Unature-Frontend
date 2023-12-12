@@ -4,8 +4,10 @@ import LOGO from "../assets/LOGO.png"
 import ALFEREZ from "../assets/alferez.png"
 import DAVID from "../assets/david.png"
 import FREINDER from "../assets/freinder.png"
+import { useGetGlobalQuery } from '../features/Api/postApiSlice'
 
 function AboutUS() {
+    const {data, isSuccess} = useGetGlobalQuery()
   return (
     <Layout>
         <h1 className='font-extrabold text-darkGreen text-4xl text-center mt-40'>Sobre Nosotros</h1>
@@ -43,7 +45,7 @@ function AboutUS() {
                 </svg>
 
                 <div className="z-20 flex flex-col justify-center items-center">
-                    <span className="font-bold text-6xl ml-2">34+</span>
+                    <span className="font-bold text-6xl ml-2">{isSuccess && data.num_publicaciones}+</span>
                     <p className="font-bold">Publicaciones</p>
                 </div>
             </div>
@@ -60,7 +62,7 @@ function AboutUS() {
                 </svg>
 
                 <div className="z-20 flex flex-col justify-center items-center">
-                    <span className="font-bold text-6xl ml-2">59+</span>
+                    <span className="font-bold text-6xl ml-2">{isSuccess && data.num_identificaciones}+</span>
                     <p className="font-bold">Identificaciones</p>
                 </div>
             </div>
@@ -77,7 +79,7 @@ function AboutUS() {
                 </svg>
 
                 <div className="z-20 flex flex-col justify-center items-center">
-                    <span className="font-bold text-6xl ml-2">34+</span>
+                    <span className="font-bold text-6xl ml-2">{isSuccess && data.num_usuarios-1}+</span>
                     <p className="font-bold">Usuarios</p>
                 </div>
             </div>

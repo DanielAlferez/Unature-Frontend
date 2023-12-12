@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 function Home() {
   return (
     <Layout>
-        <div className='grid md:grid-cols-2 mt-5 '>
+        <div className='grid md:grid-cols-2 mt-5'>
             <div className='grid place-content-center lg:p-40 p-20'>
                 <div className='grid gap-3'>
                     <p className='text-lightGreen text-2xl font-semibold'>UNATURE</p>
